@@ -13,9 +13,12 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  // Uses http.get() to load data from a single API endpoint
   getUsers(){
     return this.http.get('/getUsers');
+  }
+
+  getUser(username){
+    return this.http.get('/getUser/' + username);
   }
 
   addUser(user){

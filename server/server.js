@@ -12,8 +12,10 @@ app.use(express.static(path.join(__dirname, '../dist/chat-app/')));
 require('./routes/authUser.js')(app, fs);
 require('./routes/addUser.js')(app, fs);
 require('./routes/getUser.js')(app, fs);
-
+require('./routes/getGroups.js')(app, fs);
 require('./routes/updateUser.js')(app, fs);
+require('./routes/addGroup.js')(app, fs);
+require('./routes/deleteGroup.js')(app, fs);
 require('./listen.js')(http);
 
 app.get('/getUsers', (req, res) => {

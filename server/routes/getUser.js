@@ -1,7 +1,7 @@
 module.exports = function(app, fs){
     // route to manage user logins
-    app.get('/getUser', (req, res) => {
-        const username = req.query.username;
+    app.get('/getUser/:username', (req, res) => {
+        const username = req.params.username;
 
         fs.readFile('users.json', 'utf8', function(err, data){
             if (err){
@@ -9,11 +9,21 @@ module.exports = function(app, fs){
             }
             else{
                 const users = JSON.parse(data);
-                const user = users.filter(user => user.username === username);
-                if (user.length != 0)
+                const user = users.find(user => user.username === username);
+                if (user != null)
                     res.send(user);
-                else 
-                    res.send({'success':false});
+                else {
+                    let id = Math.max.apply(Math, users.map(function(f){return f.id;})) + 1;
+                    // add the user to the file
+                    const newUser = {'id':id, 'username':username, 'email':'', 'rank':'user' };
+                    users.push(newUser);                    
+                    const postAdd = JSON.stringify(users);
+                    fs.writeFile('users.json', postAdd, 'utf-8', function(err){
+                        if (err) throw err;
+                        // send response that registration was successful
+                        res.send(newUser);
+                    });
+                }
             }
         });
     });

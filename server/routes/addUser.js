@@ -3,7 +3,7 @@ module.exports = function(app, fs){
         const username = req.body.username;
         const email = req.body.email;
         const rank = req.body.rank;
-
+        console.log(username);
         fs.readFile('users.json', 'utf-8', function(err, data){
             if (err){
                 console.log(err);
@@ -29,3 +29,4 @@ module.exports = function(app, fs){
         });
     });
 }
+
