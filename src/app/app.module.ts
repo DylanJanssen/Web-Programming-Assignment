@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { UserComponent } from './user/user.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 import { UserService } from './user.service';
 
 @NgModule({
@@ -16,6 +18,9 @@ import { UserService } from './user.service';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
+    HttpModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

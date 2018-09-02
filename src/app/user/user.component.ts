@@ -23,4 +23,33 @@ export class UserComponent implements OnInit {
     );
   }
 
+  addUser(username, email, rank){
+    const user = {
+      username: username,
+      email: email,
+      rank: rank
+    }
+
+    this._userService.addUser(user).subscribe(
+      data => {
+        this.getUsers();
+        return true;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  updateUser(user){
+    this._userService.updateUser(user).subscribe(
+      data => {
+        this.getUsers();
+        return true;
+      },
+      error => {
+        console.error('Error saving user');
+      }
+    );
+  }
 }
