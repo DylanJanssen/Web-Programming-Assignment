@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
 
   username: string;
   public user;
+  public users;
   public groups;
 
   constructor(private _userService: UserService, private _groupService: GroupService, private router: Router) { }
@@ -28,8 +29,6 @@ export class DashboardComponent implements OnInit {
       this.username = sessionStorage.getItem('username');
       // get the user data from the server
       this.getUser(this.username);
-      // get the relevant group data from the server
-      this.getGroups(this.username);
     }
   }
 
@@ -38,10 +37,35 @@ export class DashboardComponent implements OnInit {
     this._userService.getUser(username).subscribe(
       data => {
         this.user = data;
+        this.getGroups(this.username);
+        this.getUsers();
       },
       err => console.error(err),
       () => console.log('done loading user')
     )
+  }
+
+  getUsers() {
+    this._userService.getUsers().subscribe(
+      data => {
+        this.users = data;
+      },
+      err => console.error(err),
+      () => console.log('done loading users')
+    );
+  }
+
+  promoteUser(user, rank) {
+    user.rank = rank;
+    this._userService.updateUser(user).subscribe(
+      data => {
+        this.getUsers();
+        return true;
+      },
+      error => {
+        console.error('Error saving user');
+      }
+    );
   }
 
   updateUser(user) {
@@ -59,6 +83,7 @@ export class DashboardComponent implements OnInit {
   deleteUser(username) {
     this._userService.deleteUser(username).subscribe(
       data => {
+        this.getUsers();
         return true;
       },
       error => {

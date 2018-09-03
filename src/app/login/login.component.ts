@@ -16,8 +16,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  loginUser(event) {
-    event.preventDefault();
+  loginUser() {
     sessionStorage.setItem("username", this.username);
     this.router.navigateByUrl('/dashboard');
   }

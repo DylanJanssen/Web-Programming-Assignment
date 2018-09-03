@@ -3,7 +3,6 @@ module.exports = function (app, fs) {
         const name = req.body.name;
         const desc = req.body.desc;
         const users = req.body.users;
-
         fs.readFile('groups.json', 'utf-8', function (err, data) {
             if (err) {
                 console.log(err);

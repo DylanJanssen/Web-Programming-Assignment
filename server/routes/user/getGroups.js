@@ -1,41 +1,41 @@
-module.exports = function(app, fs){
+module.exports = function (app, fs) {
     // route to retrieve user groups
     app.get('/getGroups/:username', (req, res) => {
         const username = req.params.username;
         let admin;
 
         // First check if the user is an admin
-        fs.readFile('users.json', 'utf8', function(err, data){
-            if (err){
+        fs.readFile('users.json', 'utf8', function (err, data) {
+            if (err) {
                 console.log(err);
             }
-            else{
+            else {
                 const users = JSON.parse(data);
                 user = users.find(user => user.username === username);
                 console.log(user);
-                if (user.rank === 'Super' || user.rank === 'Group'){
+                if (user.rank === 'Super' || user.rank === 'Group') {
                     admin = true;
                 }
                 // Now get the groups the user is in
-                fs.readFile('groups.json', 'utf8', function(err, data){
-                    if (err){
+                fs.readFile('groups.json', 'utf8', function (err, data) {
+                    if (err) {
                         console.log(err);
                     }
-                    else{
+                    else {
                         const groups = JSON.parse(data);
                         // If the user is an admin, just send them all the groups
-                        if (admin){
+                        if (admin) {
                             res.send(groups);
                         }
                         // Otherwise filter out the groups the user is in 
-                        else{
+                        else {
                             const userGroups = groups.filter(group => group.users.includes(username));
                             res.send(userGroups);
-                        }                        
+                        }
                     }
                 });
             }
         })
-        
+
     });
 }

@@ -17,6 +17,10 @@ export class UserService {
     return this.http.get('/getUser/' + username);
   }
 
+  getUsers() {
+    return this.http.get('/getUsers');
+  }
+
   // given a user object, sends to server to update corresponding user
   updateUser(user) {
     let body = JSON.stringify(user);

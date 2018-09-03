@@ -39,6 +39,18 @@ export class GroupComponent implements OnInit {
     )
   }
 
+  addChannel(groupname, channelname, username) {
+    this._channelService.addChannel(groupname, channelname, username).subscribe(
+      data => {
+        this.getChannels(this.group.name, this.user.username);
+        return true;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
   deleteGroup(groupname) {
     this._groupService.deleteGroup(groupname).subscribe(
       data => {
@@ -47,6 +59,15 @@ export class GroupComponent implements OnInit {
       },
       error => {
         console.error(error);
+      }
+    )
+  }
+
+  deleteChannel(channelname) {
+    this._channelService.deleteChannel(this.group.name, channelname).subscribe(
+      data => {
+        this.getChannels(this.group.name, this.user.username);
+        return true;
       }
     )
   }

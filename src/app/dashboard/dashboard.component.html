@@ -1,28 +1,87 @@
 <!-- Only display if the user is logged in -->
 <div *ngIf="this.user">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="page-header">
+        <h1>Hello {{user.username}}</h1>
+        <!-- Add a logout button -->
+        <button class="btn btn-default" (click)="logout()">Logout</button>
+      </div>
 
-  <!-- Welcome message -->
-  <h2>Welcome {{user.username}}</h2>
+      <!-- Update email address -->
+      <div class="input-group mb-3">
+        <input class="form-control" type="text" name="email" placeholder="add an email address" [(ngModel)]="user.email">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="updateUser(user)">Update Email Address</button>
+        </div>
+      </div>
 
-  <!-- Add a logout button -->
-  <button (click)="logout()">Logout</button>
+      <div class="panel-body">
+        <h2>Groups</h2>
+        <!-- Generate a list of group components -->
+        <app-group *ngFor="let group of this.groups" [group]="group" [user]="this.user" (groupDeletionEmitter)="groupDeletionHandler($event)"></app-group>
 
-  <!-- Allow the user to update their email address -->
-  <input type="text" name="email" placeholder="add an email address" [(ngModel)]="user.email">
-  <button (click)="updateUser(user)">Update Email Address</button>
-
-  <!-- User groups -->
-  <h3> Here are your groups</h3>
-
-  <!-- Generate a list of group components -->
-  <app-group *ngFor="let group of this.groups" [group]="group" [user]="this.user" (groupDeletionEmitter)="groupDeletionHandler($event)">
-  </app-group>
-
-  <!-- Admin area for creating groups -->
-  <div *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
-    Create a new group
-    <input type="text" name="groupname" placeholder="Add the group name" [(ngModel)]="groupname">
-    <input type="text" name="desc" placeholder="Add a description" [(ngModel)]="desc">
-    <button (click)="addGroup(groupname, desc, this.user.username)">Add Group</button>
+        <!-- Admin area for creating groups -->
+        <div *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-heading">Create a new group</h3>
+            </div>
+            <div class="panel-body">
+              <div class="well">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="groupname" placeholder="Add the group name" [(ngModel)]="groupname">
+                  <input type="text" class="form-control" name="desc" placeholder="Add a description" [(ngModel)]="desc">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="addGroup(groupname, desc, this.user.username)">Add
+                      Group
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-heading">User Rankings</h3>
+              </div>
+              <div class="panel-body">
+                <div class="well">
+                  <div *ngFor="let u of users">
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col">
+                            <h5>Username: {{u.username}}</h5>
+                          </div>
+                          <div class="col">
+                            <h5>Rank: {{u.rank}}</h5>
+                          </div>
+                          <div class="col">
+                            <div *ngIf="u.rank != 'Group' && u.rank != 'Super'">
+                              <button class="btn btn-outline-secondary" (click)="promoteUser(u, 'Group')">Promote to Group
+                                user
+                              </button>
+                            </div>
+                            <div *ngIf="this.user.rank == 'Super' && u.rank != 'Super'">
+                              <button class="btn btn-outline-secondary" (click)="promoteUser(u, 'Super')">Promote to Super
+                                user
+                              </button>
+                            </div>
+                            <div *ngIf="this.user.rank == 'Super'">
+                              <button *ngIf="u.username != 'Super'" class="btn btn-outline-secondary" (click)="deleteUser(u.username)">Delete
+                                User</button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

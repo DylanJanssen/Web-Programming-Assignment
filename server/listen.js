@@ -1,6 +1,6 @@
 var port = 3000;
-module.exports = function(http){
-    http.listen(port, ()=>{
+module.exports = function (http) {
+    http.listen(port, () => {
         var d = new Date();
         var n = d.getHours();
         var m = d.getMinutes();

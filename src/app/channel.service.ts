@@ -24,4 +24,20 @@ export class ChannelService {
     return this.http.get('/getChannel/' + groupname + '/' + channelname);
   }
 
+  addChannel(groupname, channelname, username) {
+    return this.http.post('/addChannel/' + groupname + '/' + channelname + '/' + username, httpOptions);
+  }
+
+  deleteChannel(groupname, channelname) {
+    return this.http.delete('/deleteChannel/' + groupname + '/' + channelname);
+  }
+
+  kickUser(user, groupname, channelname) {
+    return this.http.delete('/deleteChannelUser/' + groupname + '/' + channelname + '/' + user);
+  }
+
+  addUser(user, groupname, channelname) {
+    return this.http.post('/addChannelUser/' + groupname + '/' + channelname + '/' + user, httpOptions);
+  }
+
 }

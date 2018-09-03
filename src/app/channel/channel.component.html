@@ -1,9 +1,58 @@
-THIS IS THE CHANNEL
-{{channelname}}
-{{groupname}}
-
-<div *ngIf="channel">
-  <div *ngFor="let user of this.channel.users">
-    {{user}}
+<div *ngIf="user">
+  <div *ngIf="channel">
+    <div class="jumbotron">
+      <div class="container">
+        <div class="page-header">
+          <button class="btn btn-default" (click)="return()">Back to Dashboard</button>
+          <h2>{{groupname}}: {{channelname}} </h2>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-4">
+              <h3>Users in Channel</h3>
+              <div *ngFor="let u of this.channel.users">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col">
+                        <h5>{{u}}</h5>
+                      </div>
+                      <div class="col" *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
+                        <button *ngIf="u != 'Super'" class="btn btn-outline-secondary " type="button " (click)="kickUser(u) ">Kick</button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="container">
+                <div *ngFor="let message of this.messages" class="message">
+                  {{message}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group" *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
+                <input type="text" class="form-control" name="userToAdd" placeholder="user" [(ngModel)]="userToAdd">
+                <div class="input-group-append ">
+                  <button class="btn btn-outline-secondary " type="button " (click)="addUser(userToAdd) ">Add User</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-8 ">
+              <div class="input-group">
+                <input type="text" class="form-control" name="message" placeholder="Enter a message to send" [(ngModel)]="message">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary " type="button " (click)="sendMessage">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
