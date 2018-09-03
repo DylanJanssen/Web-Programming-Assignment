@@ -1,0 +1,9 @@
+THIS IS THE CHANNEL
+{{channelname}}
+{{groupname}}
+
+<div *ngIf="channel">
+  <div *ngFor="let user of this.channel.users">
+    {{user}}
+  </div>
+</div>

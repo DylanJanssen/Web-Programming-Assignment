@@ -9,14 +9,14 @@ import { FormsModule } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  username:string = '';
+  username: string = '';
 
-  constructor(private router:Router, private form:FormsModule) { }
+  constructor(private router: Router, private form: FormsModule) { }
 
   ngOnInit() {
   }
 
-  loginUser(event){
+  loginUser(event) {
     event.preventDefault();
     sessionStorage.setItem("username", this.username);
     this.router.navigateByUrl('/dashboard');

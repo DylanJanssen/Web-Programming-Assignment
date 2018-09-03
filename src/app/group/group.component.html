@@ -1,0 +1,32 @@
+<!-- Display the group name and description -->
+<h3>{{group.name}}</h3>
+<p>{{group.desc}}</p>
+
+<!-- Generate a list of channel components -->
+<h3> Here are your channels </h3>
+<!-- Only display if channels exist -->
+<div *ngIf="channels">
+  <div *ngFor="let channel of this.channels">
+    <a [routerLink]="['/channel', group.name, channel.name]">{{channel.name}}</a>
+
+    <!-- Allow admin to add and remove users from channel -->
+    <!-- <div *ngIf="this.user.rank == 'super' || this.user.rank == 'group'">
+      <input type="text" name="username" placeholder="Add user to channel" [(ngModel)]="username">
+      <button (click)="addUserToChannel(channelname, username)">Add User</button>
+       -->
+    <!-- List the users for admin to kick -->
+    <!-- <li *ngFor="let user of channel.users">
+        {{user}} <button (click)="deleteUserFromChannel(channelname, user)">Remove User</button>
+      </li>  
+      <button (click)="deleteChannel(channelname)">Delete Channel</button> 
+    </div> -->
+  </div>
+  <!-- Admin area for creating channels -->
+  <div *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
+    <input type="text" name="channelname" placeholder="Add a channel" [(ngModel)]="channelname">
+    <button (click)="addChannel(channelname)">Add Channel</button>
+    <div>
+      <button (click)="deleteGroup(group.name)">Delete Group</button>
+    </div>
+  </div>
+</div>

@@ -11,16 +11,20 @@ module.exports = function(app, fs){
                 const users = JSON.parse(data);
                 const user = users.find(user => user.username === username);
                 if (user != null)
+                    // send back the user
                     res.send(user);
                 else {
-                    let id = Math.max.apply(Math, users.map(function(f){return f.id;})) + 1;
                     // add the user to the file
-                    const newUser = {'id':id, 'username':username, 'email':'', 'rank':'user' };
+                    const newUser = {
+                        'username':username, 
+                        'email':'', 
+                        'rank':'User' 
+                    };
                     users.push(newUser);                    
                     const postAdd = JSON.stringify(users);
                     fs.writeFile('users.json', postAdd, 'utf-8', function(err){
                         if (err) throw err;
-                        // send response that registration was successful
+                        // send back the newly created user
                         res.send(newUser);
                     });
                 }

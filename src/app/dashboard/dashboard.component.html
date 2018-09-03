@@ -1,31 +1,28 @@
+<!-- Only display if the user is logged in -->
 <div *ngIf="this.user">
+
+  <!-- Welcome message -->
   <h2>Welcome {{user.username}}</h2>
+
+  <!-- Add a logout button -->
   <button (click)="logout()">Logout</button>
+
+  <!-- Allow the user to update their email address -->
   <input type="text" name="email" placeholder="add an email address" [(ngModel)]="user.email">
   <button (click)="updateUser(user)">Update Email Address</button>
-  
-  <!-- groups -->
-  <h3> Here are your groups</h3>
-  <!-- <div *ngIf="groups">
-    <app-group *ngFor="let group of this.groups" [group]="group">
-      <button (click)="deleteGroup(group)">Delete</button>
-    </app-group>
-  </div> -->
 
-  <div *ngFor="let group of this.groups">
-    <h3>{{group.name}}</h3>
-    <button *ngIf="this.user.rank == 'super' || this.user.rank == 'group'" (click)="deleteGroup(group)">Remove group</button>
-  </div>
-  
+  <!-- User groups -->
+  <h3> Here are your groups</h3>
+
+  <!-- Generate a list of group components -->
+  <app-group *ngFor="let group of this.groups" [group]="group" [user]="this.user" (groupDeletionEmitter)="groupDeletionHandler($event)">
+  </app-group>
+
   <!-- Admin area for creating groups -->
-  <div *ngIf="this.user.rank == 'super' || this.user.rank == 'group'">
+  <div *ngIf="this.user.rank == 'Super' || this.user.rank == 'Group'">
     Create a new group
     <input type="text" name="groupname" placeholder="Add the group name" [(ngModel)]="groupname">
     <input type="text" name="desc" placeholder="Add a description" [(ngModel)]="desc">
-    <button (click)="addGroup(groupname, desc)">Add Group</button>
-
+    <button (click)="addGroup(groupname, desc, this.user.username)">Add Group</button>
   </div>
 </div>
-
-
-

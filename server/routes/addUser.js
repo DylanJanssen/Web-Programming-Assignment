@@ -3,7 +3,7 @@ module.exports = function(app, fs){
         const username = req.body.username;
         const email = req.body.email;
         const rank = req.body.rank;
-        console.log(username);
+        
         fs.readFile('users.json', 'utf-8', function(err, data){
             if (err){
                 console.log(err);
@@ -15,9 +15,13 @@ module.exports = function(app, fs){
                     res.send({'username':username, 'success':false});
                 }
                 else{
-                    let id = Math.max.apply(Math, users.map(function(f){return f.id;})) + 1;
+                    const user = {
+                        "username":username, 
+                        "email":email, 
+                        "rank":rank
+                    }
                     // add the username to the file
-                    users.push({'id':id, 'username':username, "email":email, "rank":rank });                    
+                    users.push(user);                    
                     const postAdd = JSON.stringify(users);
                     fs.writeFile('users.json', postAdd, 'utf-8', function(err){
                         if (err) throw err;

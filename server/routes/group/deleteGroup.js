@@ -1,7 +1,7 @@
 module.exports = function(app, fs){
     app.delete('/deleteGroup/:name', (req, res) => {
         const name = req.params.name;
-        console.log(req.body);
+        
         fs.readFile('groups.json', 'utf-8', function(err, data){
             if (err){
                 console.log(err);

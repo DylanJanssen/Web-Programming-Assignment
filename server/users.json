@@ -1,1 +1,32 @@
-[{"id":1,"username":"Super","email":"super@example.com","rank":"super"},{"id":2,"username":"Dylan","email":"dylan.janssen@outlook.com","rank":"group"},{"id":3,"username":"Edmond","email":"Edmond@outlook.com","rank":"user"},{"id":4,"username":"Sophie","email":"","rank":"user"},{"id":5},{"id":6,"username":"NewUser","email":"myemail","rank":"user"}]
+[
+    {
+        "username": "Super",
+        "email": "super@example.com",
+        "rank": "Super"
+    },
+    {
+        "username": "Edmond",
+        "email": "Edmond@outlook.com",
+        "rank": "Group"
+    },
+    {
+        "username": "Bennett",
+        "email": "bennett@example.com",
+        "rank": "User"
+    },
+    {
+        "username": "Dylan",
+        "email": "dylan@example.com",
+        "rank": "Group"
+    },
+    {
+        "username": "Sophie",
+        "email": "sophie@example.com",
+        "rank": "User"
+    },
+    {
+        "username": "Jack",
+        "email": "jack@example.com",
+        "rank": "User"
+    }
+]

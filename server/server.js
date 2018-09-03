@@ -9,23 +9,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, '../dist/chat-app/')));
 
-require('./routes/authUser.js')(app, fs);
-require('./routes/addUser.js')(app, fs);
-require('./routes/getUser.js')(app, fs);
-require('./routes/getGroups.js')(app, fs);
-require('./routes/updateUser.js')(app, fs);
-require('./routes/addGroup.js')(app, fs);
-require('./routes/deleteGroup.js')(app, fs);
+// routes for user services
+require('./routes/user/getUser.js')(app, fs);
+require('./routes/user/updateUser.js')(app, fs);
+require('./routes/user/deleteUser.js')(app, fs);
+
+// routes for group services
+require('./routes/group/getGroups.js')(app, fs);
+require('./routes/group/addGroup.js')(app, fs);
+require('./routes/group/deleteGroup.js')(app, fs);
+
+
+require('./routes/getChannels.js')(app, fs);
+require('./routes/getChannel.js')(app, fs);
 require('./listen.js')(http);
 
-app.get('/getUsers', (req, res) => {
-    fs.readFile('users.json', 'utf8', function(err, data){
-        if (err){
-            console.log(err);
-        }
-        else{
-            const users = JSON.parse(data);
-            res.send(users);
-        }
-    });
-});

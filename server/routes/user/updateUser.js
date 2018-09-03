@@ -1,7 +1,7 @@
 module.exports = function(app, fs){
-    app.post('/updateUser/:id', (req, res) => {
-        const id = req.params.id;
-        console.log(id);
+    app.post('/updateUser/:username', (req, res) => {
+        const username = req.params.username;
+        
         fs.readFile('users.json', 'utf-8', function(err, data){
             if (err){
                 console.log(err);
@@ -9,8 +9,7 @@ module.exports = function(app, fs){
             else{
                 const users = JSON.parse(data);
                 users.filter(user => {
-                    if (user.id == id && id != 1){
-                        user.username = req.body.username;
+                    if (user.username === username && user.username != 'Super'){
                         user.email = req.body.email;
                         user.rank = req.body.rank;
                     }
