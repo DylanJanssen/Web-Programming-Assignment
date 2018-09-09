@@ -1,14 +1,15 @@
-module.exports = function (app, fs) {
+module.exports = function (app, db, collectionName, read) {
     // route to retrieve all users
-    app.get('/getUsers', (req, res) => {
-        fs.readFile('users.json', 'utf8', function (err, data) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                const users = JSON.parse(data);
-                res.send(users);
-            }
-        });
-    });
+    app.get('/getUsers', async (req, res) => {
+        try {
+            const users = await read.items(db, collectionName)
+            const usersString = JSON.stringify(users)
+            console.log(usersString)
+            res.send({ success: true, users: usersString })
+        }
+        catch (err) {
+            constole.log(err)
+            res.send({ success: false })
+        }
+    })
 }
