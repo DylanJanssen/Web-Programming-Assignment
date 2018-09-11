@@ -12,6 +12,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  loginUser(userCredentials) {
+    const body = JSON.stringify(userCredentials)
+    return this.http.post('/login', body, httpOptions)
+  }
+
   // given a username, requests server for user object
   getUser(username) {
     return this.http.get('/getUser/' + username);

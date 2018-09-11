@@ -12,7 +12,9 @@ module.exports = {
     itemExists: async function (db, collectionName, query) {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).findOne(query, function(err, res) {
-                if (err) throw err
+                if (err) {
+                    reject()
+                }
                 console.log(res)
                 resolve(res)
             })

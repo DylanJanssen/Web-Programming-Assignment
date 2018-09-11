@@ -4,13 +4,14 @@ module.exports = function (app, db, collectionName, create, read) {
         const user = [
             {
                 username: req.body.username,
-                password: req.body.password
+                password: req.body.password,
+                email: req.body.email
             }
         ]
         const query = {'username': req.body.username}
 
         // Check if the username already exists 
-        if (await read.itemExists(db, collectionName, query)) {
+        if (await read.itemExists(db, collectionName, query) != null) {
             res.send({ success: false })
         }
         // Otherwise create a new user

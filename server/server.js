@@ -36,6 +36,7 @@ async function connect() {
     await require('./routes/user/createUser.js')(app, db, 'Users', create, read)
     await require('./routes/user/getUsers.js')(app, db, 'Users', read)
     await require('./routes/user/removeUser.js')(app, db, 'Users', remove)
+    await require('./routes/user/login.js')(app, db, 'Users', read)
 }
 
 // // routes for user services
