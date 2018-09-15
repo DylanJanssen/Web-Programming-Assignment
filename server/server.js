@@ -11,6 +11,7 @@ const MongoClient = require('mongodb').MongoClient
 const create = require('./data-access/create.js')
 const read = require('./data-access/read.js')
 const remove = require('./data-access/remove.js')
+const update = require('./data-access/update.js')
 
 // Mongo setup
 const dbUrl = 'mongodb://localhost:27017'
@@ -23,7 +24,7 @@ app.use(express.json())
 
 // Connect to the server and setup the routes
 async function connect() {
-    const client = await MongoClient.connect(dbUrl, { useNewUrlParser: true} )
+    const client = await MongoClient.connect(dbUrl, { useNewUrlParser: true })
     console.log('Successfully connected to the server')
     const db = client.db(dbName)
 
@@ -37,6 +38,15 @@ async function connect() {
     await require('./routes/user/getUsers.js')(app, db, 'Users', read)
     await require('./routes/user/removeUser.js')(app, db, 'Users', remove)
     await require('./routes/user/login.js')(app, db, 'Users', read)
+    await require('./routes/user/updateUser.js')(app, db, 'Users', update)
+
+    await require('./routes/group/createGroup.js')(app, db, 'Groups', create, read)
+    await require('./routes/group/getGroups.js')(app, db, 'Groups', read)
+    await require('./routes/group/getUserGroups.js')(app, db, 'Groups', read)
+
+    await require('./routes/channel/createChannel.js')(app, db, 'Channels', create, read)
+    await require('./routes/channel/getChannels.js')(app, db, 'Channels', read)
+    await require('./routes/channel/getUserGroupChannels.js')(app, db, 'Channels', read)
 }
 
 // // routes for user services

@@ -1,24 +1,23 @@
 module.exports = function (app, db, collectionName, create, read) {
-    app.post('/createUser', async (req, res) => {
+    app.post('/createChannel', async (req, res) => {
         
-        const user = [
+        const channel = [
             {
-                username: req.body.username,
-                password: req.body.password,
-                email: req.body.email,
-                rank: 'user'
+                name: req.body.name,
+                groupId: req.body.groupId,
+                userIds: req.body.userIds
             }
         ]
-        const query = {'username': req.body.username}
+        const query = {'name': req.body.name, 'groupId': req.body.groupId}
 
-        // Check if the username already exists 
+        // Check if the channel already exists in the group
         if (await read.itemExists(db, collectionName, query) != null) {
             res.send({ success: false })
         }
-        // Otherwise create a new user
+        // Otherwise create a new group
         else {
             try {
-                await create.item(db, collectionName, user)
+                await create.item(db, collectionName, channel)
                 res.send({ success: true })
             }
             catch (error) {
@@ -26,6 +25,5 @@ module.exports = function (app, db, collectionName, create, read) {
                 res.send({ success: false })
             }
         }
-        
     })
 }

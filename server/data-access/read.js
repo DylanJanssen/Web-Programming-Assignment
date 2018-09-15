@@ -13,7 +13,19 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).findOne(query, function(err, res) {
                 if (err) {
-                    reject()
+                    throw err
+                }
+                console.log(res)
+                resolve(res)
+            })
+        })
+    },
+
+    findItems: async function (db, collectionName, query) {
+        return new Promise((resolve, reject) => {
+            db.collection(collectionName).find(query).toArray(function(err, res) {
+                if (err) {
+                    throw err
                 }
                 console.log(res)
                 resolve(res)

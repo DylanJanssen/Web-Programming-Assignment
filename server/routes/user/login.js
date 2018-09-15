@@ -9,7 +9,8 @@ module.exports = function (app, db, collectionName, read) {
             res.send({success: false })
         }
         else if (user.password === req.body.password) {
-            res.send({success: true, username: user.username, email: user.email })
+            const userString = JSON.stringify(user)
+            res.send({ success: true, user: userString })
         }
         else {
             res.send({success: false})

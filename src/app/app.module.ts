@@ -13,7 +13,9 @@ import { UserService } from './user.service'
 import { LoginComponent } from './login/login.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { GroupComponent } from './group/group.component'
-import { ChannelComponent } from './channel/channel.component'
+import { ChannelComponent } from './channel/channel.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { NewGroupComponent } from './new-group/new-group.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { ChannelComponent } from './channel/channel.component'
     LoginComponent,
     DashboardComponent,
     GroupComponent,
-    ChannelComponent
+    ChannelComponent,
+    NewDashboardComponent,
+    NewGroupComponent
   ],
   imports: [
     HttpClientModule,

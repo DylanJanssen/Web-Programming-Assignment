@@ -12,6 +12,9 @@ export class GroupService {
 
   constructor(private http: HttpClient) { }
 
+  getUserGroups(userId) {
+    return this.http.get('getUserGroups/' + userId)
+  }
   // given a username, requests server for groups user belongs to
   getGroups(username) {
     return this.http.get('/getGroups/' + username);

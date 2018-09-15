@@ -12,6 +12,10 @@ export class ChannelService {
 
   constructor(private http: HttpClient) { }
 
+  getUserGroupChannels(userId, groupId) {
+    return this.http.get('/getUserGroupChannels/' + groupId + '/' + userId)
+  }
+
   getChannels(groupname, username) {
     console.log(groupname);
     console.log(username);

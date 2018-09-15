@@ -1,0 +1,22 @@
+<mat-tab-group>
+
+  <mat-tab disabled>
+    <ng-template mat-tab-label>
+      <h4>Groups:</h4>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab *ngFor="let group of this.groups" label={{group.name}}>
+    <app-new-group [group]='group'></app-new-group>
+  </mat-tab>
+
+  <mat-tab *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button (click)="addGroup()">
+        <mat-icon>add_circle</mat-icon>
+        <span>Add group</span>
+      </button>
+    </ng-template>
+  </mat-tab>
+
+</mat-tab-group>

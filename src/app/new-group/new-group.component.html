@@ -1,0 +1,19 @@
+
+<mat-tab-group>
+    <mat-tab disabled>
+        <ng-template mat-tab-label>
+          <h6>Channels:</h6>
+        </ng-template>
+      </mat-tab>
+    <mat-tab *ngFor="let channel of this.channels" label={{channel.name}}>
+      Hello
+    </mat-tab>
+    <mat-tab *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" disabled>
+        <ng-template mat-tab-label>
+            <button mat-icon-button (click)="addChannel()">
+                <mat-icon>add_circle</mat-icon>
+                <span>Add Channel</span>
+            </button>
+        </ng-template>
+    </mat-tab>
+  </mat-tab-group>

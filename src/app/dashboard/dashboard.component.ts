@@ -27,8 +27,6 @@ export class DashboardComponent implements OnInit {
     else {
       // grab the username out of session storage
       this.username = sessionStorage.getItem('username');
-      // get the user data from the server
-      this.getUser(this.username);
     }
   }
 

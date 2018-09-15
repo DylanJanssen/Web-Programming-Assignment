@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material'
 import { UserService } from '../user.service';
+import {MatCardModule} from '@angular/material/card'
 
 @Component({
   selector: 'app-login',
@@ -25,9 +26,8 @@ export class LoginComponent implements OnInit {
     this._userService.loginUser(userCredentials).subscribe(
       data => {
         if (data['success']) {
-          sessionStorage.setItem('username', data['username'])
-          sessionStorage.setItem('email', data['email'])
-          this.router.navigateByUrl('/dashboard');
+          sessionStorage.setItem('user', data['user'])
+          this.router.navigateByUrl('/new-dashboard')
         }
         else {
           alert("Invalid credentials");
