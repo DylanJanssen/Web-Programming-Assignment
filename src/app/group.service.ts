@@ -15,6 +15,21 @@ export class GroupService {
   getUserGroups(userId) {
     return this.http.get('getUserGroups/' + userId)
   }
+
+  createGroup(group) {
+    const body = JSON.stringify(group)
+    return this.http.post('/createGroup', body, httpOptions)
+  }
+
+  removeGroup(groupId) {
+    return this.http.delete('/removeGroup/' + groupId)
+  }
+
+  updateGroup(group) {
+    const body = JSON.stringify(group)
+    return this.http.post('/updateGroup', body, httpOptions)
+  }
+
   // given a username, requests server for groups user belongs to
   getGroups(username) {
     return this.http.get('/getGroups/' + username);

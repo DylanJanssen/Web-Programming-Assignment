@@ -1,44 +1,43 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>Welcome</span>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>logout</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar-row>
-</mat-toolbar>
-
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form>
-      <table>
-        <tr>
-          <td>
-            <mat-form-field>
-              <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
-            </mat-form-field>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <mat-form-field>
-              <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-    </form>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button (click)="login()" color="primary">Login</button>
-  </mat-card-actions>
-</mat-card>
+    <mat-toolbar-row>
+      <span>Welcome</span>
+      
+    </mat-toolbar-row>
+  </mat-toolbar>
+    
+    <mat-grid-list cols='3'>
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+    <mat-card class='login-card'>
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form>
+          <table>
+            <tr>
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field>
+                  <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password"
+                    required>
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="login()" color="primary">Login</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>

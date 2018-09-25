@@ -1,3 +1,18 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Welcome {{this.user.username}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <mat-tab-group>
 
   <mat-tab disabled>
@@ -7,15 +22,15 @@
   </mat-tab>
 
   <mat-tab *ngFor="let group of this.groups" label={{group.name}}>
-    <app-new-group [group]='group'></app-new-group>
+    <app-new-group [group]='group' (groupDeletionEmitter)="groupDeletionHandler($event)"></app-new-group>
   </mat-tab>
 
   <mat-tab *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" disabled>
     <ng-template mat-tab-label>
-      <button mat-icon-button (click)="addGroup()">
+      <button mat-icon-button (click)="addGroupDialog()">
         <mat-icon>add_circle</mat-icon>
-        <span>Add group</span>
       </button>
+      <span>Add group</span>
     </ng-template>
   </mat-tab>
 

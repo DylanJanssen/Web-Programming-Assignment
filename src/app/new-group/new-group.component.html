@@ -6,14 +6,22 @@
         </ng-template>
       </mat-tab>
     <mat-tab *ngFor="let channel of this.channels" label={{channel.name}}>
-      Hello
+        <app-new-channel [group]='this.group' [channel]='channel' (channelDeletionEmitter)="channelDeletionHandler($event)"></app-new-channel>
     </mat-tab>
     <mat-tab *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" disabled>
         <ng-template mat-tab-label>
-            <button mat-icon-button (click)="addChannel()">
+            <button mat-icon-button (click)="addChannelDialog()">
                 <mat-icon>add_circle</mat-icon>
-                <span>Add Channel</span>
             </button>
+            <span>Add Channel</span>
+        </ng-template>
+    </mat-tab>
+    <mat-tab *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" disabled>
+        <ng-template mat-tab-label>
+            <button mat-icon-button (click)="removeGroup()">
+                <mat-icon>delete</mat-icon>                
+            </button>
+            <span>Delete Group</span>
         </ng-template>
     </mat-tab>
   </mat-tab-group>

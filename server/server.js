@@ -43,10 +43,14 @@ async function connect() {
     await require('./routes/group/createGroup.js')(app, db, 'Groups', create, read)
     await require('./routes/group/getGroups.js')(app, db, 'Groups', read)
     await require('./routes/group/getUserGroups.js')(app, db, 'Groups', read)
+    await require('./routes/group/removeGroup.js')(app, db, 'Groups', remove)
+    await require('./routes/group/updateGroup.js')(app, db, 'Groups', update)
 
     await require('./routes/channel/createChannel.js')(app, db, 'Channels', create, read)
     await require('./routes/channel/getChannels.js')(app, db, 'Channels', read)
     await require('./routes/channel/getUserGroupChannels.js')(app, db, 'Channels', read)
+    await require('./routes/channel/removeChannel.js')(app, db, 'Channels', remove)
+    await require('./routes/channel/updateChannel.js')(app, db, 'Channels', update)
 }
 
 // // routes for user services

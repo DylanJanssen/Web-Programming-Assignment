@@ -12,10 +12,12 @@ import { FormsModule } from '@angular/forms'
 import { UserService } from './user.service'
 import { LoginComponent } from './login/login.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
+
 import { GroupComponent } from './group/group.component'
 import { ChannelComponent } from './channel/channel.component';
-import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
-import { NewGroupComponent } from './new-group/new-group.component'
+import { NewDashboardComponent, AddGroupDialog } from './new-dashboard/new-dashboard.component';
+import { NewGroupComponent, AddChannelDialog } from './new-group/new-group.component';
+import { NewChannelComponent } from './new-channel/new-channel.component'
 
 @NgModule({
   declarations: [
@@ -25,7 +27,10 @@ import { NewGroupComponent } from './new-group/new-group.component'
     GroupComponent,
     ChannelComponent,
     NewDashboardComponent,
-    NewGroupComponent
+    NewGroupComponent,
+    NewChannelComponent, 
+    AddGroupDialog,
+    AddChannelDialog
   ],
   imports: [
     HttpClientModule,
@@ -37,6 +42,7 @@ import { NewGroupComponent } from './new-group/new-group.component'
     BrowserAnimationsModule,
     CustomMaterialModule
   ],
+  entryComponents: [NewDashboardComponent, AddGroupDialog, AddChannelDialog],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,39 @@
+<mat-grid-list cols="2">
+    <mat-grid-tile>CHAT</mat-grid-tile>
+    <mat-grid-tile>
+    <mat-card class='users-card'>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
+              Delete Channel
+              <button mat-icon-button (click)="removeChannel()">
+                  <mat-icon>delete</mat-icon>                
+                </button>
+          </mat-list-item>
+          <mat-card-subtitle>
+            Users in channel
+          </mat-card-subtitle>
+          <mat-list-item *ngFor='let u of this.usersInChannel'>
+            {{u.username}}
+            <button *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" mat-icon-button (click)="removeUserFromChannel(u._id)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </mat-list-item>
+          <div *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
+            <mat-card-subtitle>
+              Users not in channel
+            </mat-card-subtitle>
+            <mat-list-item *ngFor='let u of this.usersNotInChannel'>
+              {{u.username}}
+              <button mat-icon-button (click)="addUserToChannel(u._id)">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </mat-list-item>
+          </div>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+  
+</mat-grid-list>
