@@ -1,8 +1,8 @@
 const mongodb = require('mongodb')
 
 module.exports = function (app, db, collectionName, update) {
-    app.post('/updateUser/:_id', async (req, res) => {
-        const query = { _id: new mongodb.ObjectID(req.params._id) }
+    app.post('/updateUser', async (req, res) => {
+        const query = { _id: new mongodb.ObjectID(req.body._id) }
 
         const newValues = {
             $set:

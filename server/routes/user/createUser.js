@@ -6,7 +6,7 @@ module.exports = function (app, db, collectionName, create, read) {
                 username: req.body.username,
                 password: req.body.password,
                 email: req.body.email,
-                rank: 'user'
+                rank: req.body.rank
             }
         ]
         const query = {'username': req.body.username}

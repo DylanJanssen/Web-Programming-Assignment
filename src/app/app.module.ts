@@ -15,9 +15,10 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 
 import { GroupComponent } from './group/group.component'
 import { ChannelComponent } from './channel/channel.component';
-import { NewDashboardComponent, AddGroupDialog } from './new-dashboard/new-dashboard.component';
+import { NewDashboardComponent, AddGroupDialog, CreateNewUserDialog } from './new-dashboard/new-dashboard.component';
 import { NewGroupComponent, AddChannelDialog } from './new-group/new-group.component';
-import { NewChannelComponent } from './new-channel/new-channel.component'
+import { NewChannelComponent } from './new-channel/new-channel.component';
+import { AdminComponent } from './admin/admin.component'
 
 @NgModule({
   declarations: [
@@ -30,7 +31,9 @@ import { NewChannelComponent } from './new-channel/new-channel.component'
     NewGroupComponent,
     NewChannelComponent, 
     AddGroupDialog,
-    AddChannelDialog
+    AddChannelDialog,
+    CreateNewUserDialog,
+    AdminComponent
   ],
   imports: [
     HttpClientModule,
@@ -42,7 +45,7 @@ import { NewChannelComponent } from './new-channel/new-channel.component'
     BrowserAnimationsModule,
     CustomMaterialModule
   ],
-  entryComponents: [NewDashboardComponent, AddGroupDialog, AddChannelDialog],
+  entryComponents: [NewDashboardComponent, AddGroupDialog, AddChannelDialog, CreateNewUserDialog],
   providers: [],
   bootstrap: [AppComponent]
 })

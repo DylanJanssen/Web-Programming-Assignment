@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
   MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule, MatTabsModule,
-  MatGridListModule, MatListModule, MAT_DIALOG_DEFAULT_OPTIONS
+  MatGridListModule, MatListModule, MAT_DIALOG_DEFAULT_OPTIONS, MatRadioModule
 } from '@angular/material';
 @NgModule({
   providers: [
@@ -22,7 +22,8 @@ import {
   MatProgressSpinnerModule,
   MatTabsModule,
   MatGridListModule,
-  MatListModule
+  MatListModule,
+  MatRadioModule
   ],
   exports: [
   CommonModule,
@@ -37,7 +38,8 @@ import {
    MatProgressSpinnerModule,
    MatTabsModule,
    MatGridListModule,
-   MatListModule
+   MatListModule,
+   MatRadioModule
    ],
 })
 export class CustomMaterialModule { }

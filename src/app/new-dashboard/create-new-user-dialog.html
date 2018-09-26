@@ -1,0 +1,64 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title><b>Create new user</b></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+            <table>
+                <tr>
+                    <td>
+                        <p>Enter the new users details</p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <mat-form-field>
+                        <input matInput placeholder="Username" [(ngModel)]="data.username" required>
+                    </mat-form-field>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <input matInput placeholder="Password" [(ngModel)]="data.password" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <mat-form-field>
+                            <input matInput placeholder="Email" [(ngModel)]="data.email" required>
+                        </mat-form-field>
+                    </td>
+                </tr>
+
+                <mat-radio-group [(ngModel)]="data.rank">
+                        <tr>
+                            <td>
+                                <mat-radio-button value='User'>
+                                    User
+                                </mat-radio-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-radio-button value='Group'>
+                                    Group
+                                </mat-radio-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-radio-button value='Super'>
+                                    Super
+                                </mat-radio-button>
+                            </td>
+                        </tr>
+                    </mat-radio-group>
+            </table>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial color="primary">Create User</button>
+    </mat-card-actions>
+
+</mat-card>

@@ -17,6 +17,15 @@ export class UserService {
     return this.http.post('/login', body, httpOptions)
   }
 
+  createUser(user) {
+    const body = JSON.stringify(user)
+    return this.http.post('/createUser', body, httpOptions)
+  }
+
+  removeUser(userId) {
+    return this.http.delete('/removeUser/' + userId)
+  }
+
   // given a username, requests server for user object
   getUser(username) {
     return this.http.get('/getUser/' + username);
@@ -29,7 +38,7 @@ export class UserService {
   // given a user object, sends to server to update corresponding user
   updateUser(user) {
     let body = JSON.stringify(user);
-    return this.http.post('/updateUser/' + user.username, body, httpOptions);
+    return this.http.post('/updateUser', body, httpOptions);
   }
 
   // given a username, sends to server to remove the corresponding user
