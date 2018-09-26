@@ -3,6 +3,7 @@ import { ChannelService } from '../channel.service'
 import { Router } from '@angular/router'
 import { UserService } from '../user.service';
 import { GroupService } from '../group.service';
+import { SocketService } from '../socket.service';
 
 @Component({
   selector: 'app-new-channel',
@@ -11,15 +12,26 @@ import { GroupService } from '../group.service';
 })
 export class NewChannelComponent implements OnInit {
 
-  public user
-  public usersInChannel
-  public usersNotInChannel
+  user
+  usersInChannel
+  usersNotInChannel
+  messages
+  message
+  connection
+
+  chatting = false
 
   @Input('group') group
   @Input('channel') channel
   @Output() channelDeletionEmitter = new EventEmitter()
 
-  constructor(private _userService: UserService, private _groupService: GroupService, private _channelService: ChannelService, private router: Router) { }
+  constructor(
+    private _userService: UserService,
+    private _groupService: GroupService,
+    private _channelService: ChannelService,
+    private router: Router,
+    private _socketService: SocketService
+  ) { }
 
   ngOnInit() {
     if (!sessionStorage.getItem('user')) {
@@ -31,9 +43,67 @@ export class NewChannelComponent implements OnInit {
     else {
       // grab the username out of session storage
       this.user = JSON.parse(sessionStorage.getItem('user'))
+      this.message = ''
+      this.messages = []
       this.getUsers()
     }
   }
+
+  toggleChat() {
+    if (this.chatting){
+      this.chatting = false
+      this.endChat()
+    }
+    else {
+      this.chatting = true
+      this.startChat()
+    }
+  }
+
+  startChat() {
+    // this grabs messages from the database
+    this._socketService.getChannelMessages(this.channel._id).subscribe( message => {
+      console.log(message)
+      this.messages = message['messages']
+    })
+
+    //setup the socket
+    this.connection = this._socketService.getMessages().subscribe(message => {
+      this.messages.push(message)
+      console.log(this.messages)
+    })
+
+    this._socketService.joinChannel(this.channel._id, this.user.username)
+  }
+
+  endChat() {
+    this.connection.unsubscribe();
+  }
+
+  sendMessage() {
+    // send a message to the server
+    const message = 
+      {
+        message: this.user.username + ': ' + this.message,
+        channelId: this.channel._id,
+        userId: this.user._id,
+        type: 'text',
+        timestamp: Date.now(),
+        photoId: null
+      }
+    
+    this._socketService.sendMessage(message)
+    this.message = ''
+  }
+
+
+  ngOnDestroy() {
+    // when leaving this component, close the subscription
+    if (this.connection) {
+      this.connection.unsubscribe();
+    }
+  }
+
 
   getUsers() {
     this._userService.getUsers().subscribe(
@@ -61,7 +131,7 @@ export class NewChannelComponent implements OnInit {
 
   addUserToChannel(userId) {
     // Add user to the group if they aren't already 
-    if (!this.group.userIds.includes(userId)){
+    if (!this.group.userIds.includes(userId)) {
       this.group.userIds.push(userId)
       this._groupService.updateGroup(this.group).subscribe(
         data => {

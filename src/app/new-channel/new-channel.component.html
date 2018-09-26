@@ -1,14 +1,44 @@
 <mat-grid-list cols="2">
-    <mat-grid-tile>CHAT</mat-grid-tile>
-    <mat-grid-tile>
+  <!-- LEFT SIDE -->
+  <mat-grid-tile>
+    <mat-card fxFlex fxLayoutAlign="start center" fxLayout="column" class="solution" [style.borderRadius.px]="'0'"
+      [style.paddingTop.px]="'60'">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>CHAT</mat-card-title>
+        </mat-card-header>
+        <mat-card-content [style.overflow]="'auto'" [style.height.px]="'300'" [style.width.px]="'600'">
+          <mat-list-item *ngFor='let message of this.messages'>
+            <mat-list-item>
+              {{message.message}}
+            </mat-list-item>
+          </mat-list-item>
+        </mat-card-content>
+      </mat-card>
+      <mat-form-field>
+        <input matInput placeholder="message" [(ngModel)]="message" type="text" (keydown.enter)="sendMessage()">
+      </mat-form-field>
+      <mat-card-actions>
+        <button mat-raised-button (click)="sendMessage()" color="primary">Send</button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <!-- RIGHT SIDE -->
+  <mat-grid-tile>
     <mat-card class='users-card'>
       <mat-card-content>
         <mat-list>
-          <mat-list-item *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
-              Delete Channel
-              <button mat-icon-button (click)="removeChannel()">
-                  <mat-icon>delete</mat-icon>                
+          <mat-list-item>
+              <button mat-icon-button (click)="toggleChat()">
+                  ToggleChat
                 </button>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
+            Delete Channel
+            <button mat-icon-button (click)="removeChannel()">
+              <mat-icon>delete</mat-icon>
+            </button>
           </mat-list-item>
           <mat-card-subtitle>
             Users in channel
@@ -35,5 +65,5 @@
     </mat-card>
   </mat-grid-tile>
 
-  
+
 </mat-grid-list>

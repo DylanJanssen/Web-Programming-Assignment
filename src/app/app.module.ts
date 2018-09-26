@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-
+import { SocketService } from './socket.service'
 import { NgModule } from '@angular/core'
 import { CustomMaterialModule } from './core/material.module'
 import {MatCardModule} from '@angular/material/card'
@@ -46,7 +46,9 @@ import { AdminComponent } from './admin/admin.component'
     CustomMaterialModule
   ],
   entryComponents: [NewDashboardComponent, AddGroupDialog, AddChannelDialog, CreateNewUserDialog],
-  providers: [],
+  providers: [
+    SocketService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

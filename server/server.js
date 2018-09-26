@@ -2,11 +2,12 @@
 
 const express = require('express')
 const app = express()
+
 const bodyParser = require('body-parser')
 const http = require('http').Server(app)
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
-
+const io = require('socket.io')(http);
 // Import the data access files
 const create = require('./data-access/create.js')
 const read = require('./data-access/read.js')
@@ -32,6 +33,7 @@ async function connect() {
     await create.collection(db, 'Users')
     await create.collection(db, 'Groups')
     await create.collection(db, 'Channels')
+    await create.collection(db, 'ChatMessages')
 
     // Setup the routes
     await require('./routes/user/createUser.js')(app, db, 'Users', create, read)
@@ -51,6 +53,9 @@ async function connect() {
     await require('./routes/channel/getUserGroupChannels.js')(app, db, 'Channels', read)
     await require('./routes/channel/removeChannel.js')(app, db, 'Channels', remove)
     await require('./routes/channel/updateChannel.js')(app, db, 'Channels', update)
+
+    await require('./getChannelMessages.js')(app, db, 'ChatMessages', read)
+    await require('./socket.js')(app, io, db, 'ChatMessages', create, read)
 }
 
 // // routes for user services
@@ -71,6 +76,7 @@ async function connect() {
 // require('./routes/channel/deleteChannelUser.js')(app, fs)  // delete a user from the channel
 // require('./routes/channel/addChannelUser.js')(app, fs)     // add a user to the channel
 // require('./routes/channel/deleteChannel.js')(app, fs)      // delete the channel
+
 
 require('./listen.js')(http)
 connect()
