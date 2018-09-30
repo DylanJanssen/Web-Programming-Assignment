@@ -8,9 +8,6 @@ module.exports = function (app, db, collectionName, create, read) {
                 userIds: req.body.userIds
             }
         ]
-        console.log(req.body.name)
-        console.log(req.body.groupId)
-        console.log(req.body.userIds)
         const query = {'name': req.body.name, 'groupId': req.body.groupId}
 
         // Check if the channel already exists in the group

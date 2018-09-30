@@ -12,6 +12,10 @@ export class GroupService {
 
   constructor(private http: HttpClient) { }
 
+  getGroups() {
+    return this.http.get('getGroups')
+  }
+
   getUserGroups(userId) {
     return this.http.get('getUserGroups/' + userId)
   }
@@ -28,22 +32,6 @@ export class GroupService {
   updateGroup(group) {
     const body = JSON.stringify(group)
     return this.http.post('/updateGroup', body, httpOptions)
-  }
-
-  // given a username, requests server for groups user belongs to
-  getGroups(username) {
-    return this.http.get('/getGroups/' + username);
-  }
-
-  // given a group, requests server to add the group
-  addGroup(group) {
-    const body = JSON.stringify(group);
-    return this.http.post('/addGroup', body, httpOptions);
-  }
-
-  // given a groupname, requests server to delete the group
-  deleteGroup(groupname) {
-    return this.http.delete('/deleteGroup/' + groupname);
   }
 
 }

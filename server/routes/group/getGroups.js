@@ -4,11 +4,10 @@ module.exports = function (app, db, collectionName, read) {
         try {
             const groups = await read.items(db, collectionName)
             const groupsString = JSON.stringify(groups)
-            console.log(groupsString)
             res.send({ success: true, groups: groupsString })
         }
         catch (err) {
-            constole.log(err)
+            console.log(err)
             res.send({ success: false })
         }
     })

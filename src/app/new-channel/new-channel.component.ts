@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { ChannelService } from '../channel.service'
+import { ChannelService } from '../services/channel.service'
 import { Router } from '@angular/router'
-import { UserService } from '../user.service';
-import { GroupService } from '../group.service';
-import { SocketService } from '../socket.service';
+import { UserService } from '../services/user.service';
+import { GroupService } from '../services/group.service';
+import { SocketService } from '../services/socket.service';
+import { ImgUploadService } from '../services/img-upload.service'
 
 @Component({
   selector: 'app-new-channel',
@@ -18,6 +19,9 @@ export class NewChannelComponent implements OnInit {
   messages
   message
   connection
+  selectedFile = null
+  imagepath = ''
+  messageUser
 
   chatting = false
 
@@ -30,7 +34,8 @@ export class NewChannelComponent implements OnInit {
     private _groupService: GroupService,
     private _channelService: ChannelService,
     private router: Router,
-    private _socketService: SocketService
+    private _socketService: SocketService,
+    private _imgUploadService: ImgUploadService
   ) { }
 
   ngOnInit() {
@@ -46,11 +51,17 @@ export class NewChannelComponent implements OnInit {
       this.message = ''
       this.messages = []
       this.getUsers()
+
+      // this grabs messages from the database
+      this._socketService.getChannelMessages(this.channel._id).subscribe(message => {
+        console.log(message)
+        this.messages = message['messages']
+      })
     }
   }
 
   toggleChat() {
-    if (this.chatting){
+    if (this.chatting) {
       this.chatting = false
       this.endChat()
     }
@@ -61,12 +72,6 @@ export class NewChannelComponent implements OnInit {
   }
 
   startChat() {
-    // this grabs messages from the database
-    this._socketService.getChannelMessages(this.channel._id).subscribe( message => {
-      console.log(message)
-      this.messages = message['messages']
-    })
-
     //setup the socket
     this.connection = this._socketService.getMessages().subscribe(message => {
       this.messages.push(message)
@@ -74,24 +79,82 @@ export class NewChannelComponent implements OnInit {
     })
 
     this._socketService.joinChannel(this.channel._id, this.user.username)
+
+    // send a connected message to the server
+    const message =
+    {
+      message: this.user.username + ' has connected',
+      channelId: this.channel._id,
+      userId: '0',
+      type: 'text',
+      timestamp: Date.now(),
+      image: null
+    }
+
+    this._socketService.sendMessage(message)
+    this.message = ''
   }
 
   endChat() {
+    // send a connected message to the server
+    const message =
+    {
+      message: this.user.username + ' has disconnected',
+      channelId: this.channel._id,
+      userId: '0',
+      type: 'text',
+      timestamp: Date.now(),
+      image: null
+    }
+
+    this._socketService.sendMessage(message)
+    this.message = ''
     this.connection.unsubscribe();
   }
 
-  sendMessage() {
-    // send a message to the server
-    const message = 
-      {
-        message: this.user.username + ': ' + this.message,
-        channelId: this.channel._id,
-        userId: this.user._id,
-        type: 'text',
-        timestamp: Date.now(),
-        photoId: null
+  onFileSelected(event) {
+    console.log(event)
+    this.selectedFile = event.target.files[0]
+    console.log(this.selectedFile)
+  }
+
+  onUpload() {
+    const fd = new FormData()
+    fd.append('image', this.selectedFile, this.selectedFile.name)
+    this._imgUploadService.imgUpload(fd).subscribe(res => {
+      if (res['image']) {
+        this.imagepath = res['image']
+
+        const message =
+        {
+          message: null,
+          channelId: this.channel._id,
+          userId: this.user._id,
+          type: 'image',
+          timestamp: Date.now(),
+          image: this.imagepath
+        }
+        this._socketService.sendMessage(message)
       }
-    
+      this.selectedFile = null
+    })
+  }
+
+  sendMessage() {
+    if (!this.chatting) {
+      return
+    }
+    // send a message to the server
+    const message =
+    {
+      message: this.message,
+      channelId: this.channel._id,
+      userId: this.user._id,
+      type: 'text',
+      timestamp: Date.now(),
+      image: null
+    }
+
     this._socketService.sendMessage(message)
     this.message = ''
   }
@@ -166,6 +229,20 @@ export class NewChannelComponent implements OnInit {
         console.error(error)
       }
     )
+  }
+
+  getUser(message) {
+    if (message.userId === '0') {
+      return {
+        username: "[SERVER]",
+        password: null,
+        email: null,
+        rank: null,
+        image: 'server.svg'
+      }
+    }
+    this.messageUser = this.usersInChannel.find(obj => obj._id === message.userId)
+    return this.messageUser
   }
 
 }

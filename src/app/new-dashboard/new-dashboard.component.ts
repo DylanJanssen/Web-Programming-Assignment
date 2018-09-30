@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core'
-import { GroupService } from '../group.service'
-import { UserService } from '../user.service'
+import { GroupService } from '../services/group.service'
+import { UserService } from '../services/user.service'
 import { Router } from '@angular/router'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material'
-import { AlertPromise } from 'selenium-webdriver';
+import { ImgUploadService } from '../services/img-upload.service';
 
 export interface DialogData {
   newGroupName: string
@@ -13,6 +13,11 @@ export interface newUserDialogData {
   newUsername: string
   newUserEmail: string
   newUserPassword: string
+}
+
+export interface updateAvatarDialogData {
+  selectedFile: string
+  imagePath: string
 }
 
 @Component({
@@ -27,7 +32,12 @@ export class NewDashboardComponent implements OnInit {
   public newGroup
   public newUser
 
-  constructor(private _userService: UserService, private _groupService: GroupService, private router: Router, public dialog: MatDialog) { }
+  constructor(
+    private _userService: UserService,
+    private _groupService: GroupService,
+    private router: Router,
+    private _imgUploadService: ImgUploadService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     if (!sessionStorage.getItem('user')) {
@@ -59,7 +69,7 @@ export class NewDashboardComponent implements OnInit {
 
   createNewUserDialog() {
     const dialogRef = this.dialog.open(CreateNewUserDialog, {
-      data: { }
+      data: {}
     })
     dialogRef.afterClosed().subscribe(result => {
       if (result.username != null && result.password != null && result.email != null && result.rank != null) {
@@ -75,23 +85,49 @@ export class NewDashboardComponent implements OnInit {
     })
   }
 
+  updateAvatarDialog() {
+    const dialogRef = this.dialog.open(UpdateAvatarDialog, {
+      width: '500px',
+      data: {}
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.selectedFile != null) {
+        console.log('dialog closed')
+        this.updateAvatar(result.selectedFile)
+      }
+    })
+  }
+
+
+
   getUserGroups(userId) {
-    this._groupService.getUserGroups(userId).subscribe(
-      data => {
-        this.groups = JSON.parse(data['groups'])
-      },
-      err => console.error(err),
-      () => console.log('Done loading users groups')
-    )
+    if (this.user.rank === 'Group' || this.user.rank === 'Super') {
+      this._groupService.getGroups().subscribe(
+        data => {
+          this.groups = JSON.parse(data['groups'])
+        },
+        err => console.error(err),
+        () => console.log('Done loading users groups')
+      )
+    }
+    else {
+      this._groupService.getUserGroups(userId).subscribe(
+        data => {
+          this.groups = JSON.parse(data['groups'])
+        },
+        err => console.error(err),
+        () => console.log('Done loading users groups')
+      )
+    }
   }
 
   createGroup(groupName) {
-    const group = 
-      {
-          name: groupName,
-          userIds: [this.user._id]
-      }
-  
+    const group =
+    {
+      name: groupName,
+      userIds: [this.user._id]
+    }
+
     this._groupService.createGroup(group).subscribe(
       data => {
         this.getUserGroups(this.user._id)
@@ -106,7 +142,7 @@ export class NewDashboardComponent implements OnInit {
   createUser(user) {
     this._userService.createUser(user).subscribe(
       data => {
-        if (data['success']){
+        if (data['success']) {
           alert("User Created")
         }
         else {
@@ -118,6 +154,33 @@ export class NewDashboardComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+
+  updateAvatar(selectedFile) {
+    // upload the image
+    const fd = new FormData()
+    fd.append('image', selectedFile, selectedFile.name)
+    this._imgUploadService.imgUpload(fd).subscribe(res => {
+      if (res['image']) {
+        this.user.image = res['image']
+        console.log(this.user)
+        this._userService.updateUser(this.user).subscribe(
+          data => {
+            if (data['success']) {
+              alert("Avatar updated")
+              this.ngOnInit()
+            }
+            else {
+              alert("Invalid User")
+            }
+            return true
+          },
+          error => {
+            console.log(error)
+          }
+        )
+      }
+    })
   }
 
   groupDeletionHandler(event) {
@@ -163,4 +226,22 @@ export class CreateNewUserDialog {
     this.dialogRef.close()
   }
 
+}
+
+@Component({
+  selector: 'update-avatar-dialog',
+  templateUrl: './update-avatar-dialog.html',
+})
+export class UpdateAvatarDialog {
+  constructor(
+    public dialogRef: MatDialogRef<UpdateAvatarDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: updateAvatarDialogData) { }
+
+  onNoClick() {
+    this.dialogRef.close()
+  }
+
+  onFileSelected(event) {
+    this.data.selectedFile = event.target.files[0]
+  }
 }

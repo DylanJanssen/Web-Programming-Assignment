@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
-import { ChannelService } from '../channel.service';
+import { ChannelService } from '../services/channel.service';
 import { Router } from '@angular/router';
-import { GroupService } from '../group.service';
+import { GroupService } from '../services/group.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material'
 
 export interface DialogData {
@@ -23,8 +23,8 @@ export class NewGroupComponent implements OnInit {
   @Output() groupDeletionEmitter = new EventEmitter()
 
   constructor(
-    private _groupService: GroupService, 
-    private _channelService: ChannelService, 
+    private _groupService: GroupService,
+    private _channelService: ChannelService,
     private router: Router,
     public dialog: MatDialog
   ) { }
@@ -58,22 +58,33 @@ export class NewGroupComponent implements OnInit {
   }
 
   getUserGroupChannels(userId, groupId) {
-    this._channelService.getUserGroupChannels(userId, groupId).subscribe(
-      data => {
-        this.channels = JSON.parse(data['channels'])
-      },
-      err => console.error(err),
-      () => console.log('Done loading users group channels')
-    )
+    if (this.user.rank === 'Group' || this.user.rank === 'Super') {
+      this._channelService.getChannels().subscribe(
+        data => {
+          this.channels = JSON.parse(data['groups'])
+        },
+        err => console.error(err),
+        () => console.log('Done loading users groups')
+      )
+    }
+    else {
+      this._channelService.getUserGroupChannels(userId, groupId).subscribe(
+        data => {
+          this.channels = JSON.parse(data['channels'])
+        },
+        err => console.error(err),
+        () => console.log('Done loading users group channels')
+      )
+    }
   }
 
   createChannel(channelName) {
-    const channel = 
-      {
-          name: channelName,
-          groupId: this.group._id,
-          userIds: [this.user._id]
-      }
+    const channel =
+    {
+      name: channelName,
+      groupId: this.group._id,
+      userIds: [this.user._id]
+    }
 
     this._channelService.createChannel(channel).subscribe(
       data => {

@@ -4,7 +4,6 @@ module.exports = function (app, db, collectionName, read) {
         try {
             const users = await read.items(db, collectionName)
             const usersString = JSON.stringify(users)
-            console.log(usersString)
             res.send({ success: true, users: usersString })
         }
         catch (err) {

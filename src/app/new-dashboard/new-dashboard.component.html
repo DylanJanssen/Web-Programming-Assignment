@@ -6,9 +6,13 @@
     </button>
     <mat-menu #menu="matMenu">
       <button *ngIf="this.user.rank === 'Super'" mat-menu-item (click)="createNewUserDialog()">
-        <mat-icon>add</mat-icon>
+        <mat-icon>person_add</mat-icon>
         <span>Create new User</span>
       </button>
+      <button mat-menu-item (click)="updateAvatarDialog()">
+          <mat-icon>portrait</mat-icon>
+          <span>Upload Avatar</span>
+        </button>
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>logout</span>

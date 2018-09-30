@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material'
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import {MatCardModule} from '@angular/material/card'
 
 @Component({

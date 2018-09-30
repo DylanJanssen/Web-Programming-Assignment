@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title><b>Update Avatar</b></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <table>
+            <tr>
+                <td>
+                    Upload Image:
+                    <button mat-icon-button (click)="fileInput.click()">
+                        <mat-icon>folder_open</mat-icon>
+                    </button>
+                    <input hidden type="file" #fileInput (change)="onFileSelected($event)">
+                    <div *ngIf="this.data.selectedFile">
+                        {{this.data.selectedFile.name}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial color="primary">Upload</button>
+    </mat-card-actions>
+
+</mat-card>

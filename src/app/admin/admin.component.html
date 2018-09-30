@@ -1,33 +1,55 @@
 <mat-card class='users-card'>
   <mat-card-content>
-    <mat-list >
+    <mat-list>
       <mat-card-subtitle>
         Users
       </mat-card-subtitle>
-      <mat-list-item *ngFor='let u of this.users' >
-        {{u.username}}
-        <mat-radio-group [(ngModel)]=u.rank>
-          <mat-radio-button value='User'>
-            User
-          </mat-radio-button>
-          <mat-radio-button value='Group'>
-            Group
-          </mat-radio-button>
-          <mat-radio-button *ngIf="this.user.rank === 'Super'" value='Super'>
-            Super
-          </mat-radio-button>
-        </mat-radio-group>
-        <mat-list-item>
-            <button mat-raised-button (click)="save(u)" color="primary">Save</button>
+      <table cellpadding="20px" table-layout="fixed" >
+        <tr>
+          <mat-list-item *ngFor='let u of this.users'>
+            <td width="16%">
+              {{u.username}}
+            </td>
+            <mat-radio-group [(ngModel)]=u.rank >
+              <td width="16%">
+                <mat-radio-button value='User' >
+                  User
+                </mat-radio-button>
+              </td>
+
+              <td width="16%">
+                <mat-radio-button value='Group' >
+                  Group
+                </mat-radio-button>
+              </td>
+
+              <td width="16%">
+                <mat-radio-button *ngIf="this.user.rank === 'Super'" value='Super' >
+                  Super
+                </mat-radio-button>
+              </td>
+
+            </mat-radio-group>
+
+            <td width="16%">
+              <mat-list-item>
+                <button mat-raised-button (click)="save(u)" color="primary">Save</button>
+              </mat-list-item>
+            </td>
+
+            <td width="16%">
+              <mat-list-item>
+                <button mat-raised-button (click)="removeUser(u._id)" color='warn'>
+                    Delete
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+            </td>
+
           </mat-list-item>
-        <mat-list-item>
-            Delete User
-            <button mat-icon-button (click)="removeUser(u._id)" >
-                <mat-icon>delete</mat-icon>                
-              </button>
-        </mat-list-item>
-      </mat-list-item>
-      
+        </tr>
+
+      </table>
 
     </mat-list>
   </mat-card-content>

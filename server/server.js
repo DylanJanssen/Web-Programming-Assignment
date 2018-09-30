@@ -6,8 +6,13 @@ const app = express()
 const bodyParser = require('body-parser')
 const http = require('http').Server(app)
 const path = require('path')
+// Mongo for database 
 const MongoClient = require('mongodb').MongoClient
+// io for socket communications
 const io = require('socket.io')(http);
+// formidable for image uploads
+const formidable = require('formidable')
+
 // Import the data access files
 const create = require('./data-access/create.js')
 const read = require('./data-access/read.js')
@@ -22,6 +27,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../dist/chat-app/')))
 app.use(express.json())
+// route to alias /images to the /userimages directory
+app.use('/images', express.static(path.join(__dirname, '../images')))
 
 // Connect to the server and setup the routes
 async function connect() {
@@ -34,6 +41,7 @@ async function connect() {
     await create.collection(db, 'Groups')
     await create.collection(db, 'Channels')
     await create.collection(db, 'ChatMessages')
+    await create.collection(db, 'Images')
 
     // Setup the routes
     await require('./routes/user/createUser.js')(app, db, 'Users', create, read)
@@ -54,29 +62,30 @@ async function connect() {
     await require('./routes/channel/removeChannel.js')(app, db, 'Channels', remove)
     await require('./routes/channel/updateChannel.js')(app, db, 'Channels', update)
 
-    await require('./getChannelMessages.js')(app, db, 'ChatMessages', read)
-    await require('./socket.js')(app, io, db, 'ChatMessages', create, read)
+    await require('./routes/getChannelMessages.js')(app, db, 'ChatMessages', read)
+    await require('./routes/socket.js')(app, io, db, 'ChatMessages', create, read)
+    await require('./routes/uploads.js')(app, formidable, db, 'Images', create)
+
+    // Create the super user
+    const user = [
+        {
+            username: 'Super',
+            password: 'Super',
+            email: 'Super@admin.com',
+            rank: 'Super',
+            image: 'admin.png'
+        }
+    ]
+    const query = { 'username': 'Super' }
+    try {
+        if (await read.itemExists(db, 'Users', query) == null) {
+            create.item(db, 'Users', user)
+        }
+    }
+    catch (error) {
+        console.error(error)
+    }
 }
-
-// // routes for user services
-// require('./routes/user/getUser.js')(app, fs)       // get / create a user
-// require('./routes/user/getUsers.js')(app, fs)      // get all users
-// require('./routes/user/updateUser.js')(app, fs)    // update a user
-// require('./routes/user/deleteUser.js')(app, fs)    // delete a user
-// require('./routes/user/getGroups.js')(app, fs)     // get groups that user is in
-// require('./routes/user/getChannels.js')(app, fs)   // of a group get channels that a user is in
-
-// // routes for group services
-// require('./routes/group/addGroup.js')(app, fs)     // add a group
-// require('./routes/group/deleteGroup.js')(app, fs)  // delete a group
-
-// // routes for channel services 
-// require('./routes/channel/getChannel.js')(app, fs)     // get a channel given the name
-// require('./routes/channel/addChannel.js')(app, fs)     // add a channel to the given group
-// require('./routes/channel/deleteChannelUser.js')(app, fs)  // delete a user from the channel
-// require('./routes/channel/addChannelUser.js')(app, fs)     // add a user to the channel
-// require('./routes/channel/deleteChannel.js')(app, fs)      // delete the channel
-
 
 require('./listen.js')(http)
 connect()

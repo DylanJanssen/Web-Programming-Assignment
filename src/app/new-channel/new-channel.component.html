@@ -1,69 +1,151 @@
-<mat-grid-list cols="2">
-  <!-- LEFT SIDE -->
-  <mat-grid-tile>
-    <mat-card fxFlex fxLayoutAlign="start center" fxLayout="column" class="solution" [style.borderRadius.px]="'0'"
-      [style.paddingTop.px]="'60'">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>CHAT</mat-card-title>
-        </mat-card-header>
-        <mat-card-content [style.overflow]="'auto'" [style.height.px]="'300'" [style.width.px]="'600'">
-          <mat-list-item *ngFor='let message of this.messages'>
-            <mat-list-item>
-              {{message.message}}
-            </mat-list-item>
-          </mat-list-item>
-        </mat-card-content>
-      </mat-card>
-      <mat-form-field>
-        <input matInput placeholder="message" [(ngModel)]="message" type="text" (keydown.enter)="sendMessage()">
-      </mat-form-field>
-      <mat-card-actions>
-        <button mat-raised-button (click)="sendMessage()" color="primary">Send</button>
-      </mat-card-actions>
-    </mat-card>
-  </mat-grid-tile>
+<mat-card *ngIf="this.usersInChannel" fxFlex="0px" fxLayout="row" class="solution" [style.borderRadius.px]="'0'"
+  [style.paddingTop.px]="'50'" fxLayoutAlign="center">
+  <table table-layout="fixed">
+    <tr>
+      <td width="25%">
+      </td>
+      <td width="25%">
 
-  <!-- RIGHT SIDE -->
-  <mat-grid-tile>
-    <mat-card class='users-card'>
-      <mat-card-content>
-        <mat-list>
-          <mat-list-item>
-              <button mat-icon-button (click)="toggleChat()">
-                  ToggleChat
+        <mat-card class='chat-card' cellpadding="25px">
+          <mat-card-header>
+            <mat-card-title>CHAT</mat-card-title>
+          </mat-card-header>
+          <mat-card-content [style.overflow]="'auto'" [style.height.px]="'500'" [style.width.px]="'400'">
+            <mat-list-item *ngFor='let message of this.messages'>
+              <div *ngIf="getUser(message); let u">
+                <table cellpadding="5px">
+                  <tr>
+                    <td>
+                      <!-- User avatar -->
+                      <img width="50px" *ngIf="u.image" [attr.src]="'http://localhost:3000/images/' + u.image" class="avatar" />
+                    </td>
+                    <td>
+                      <!-- Username -->
+                      <b>{{u.username}}:</b>
+                    </td>
+                    <!-- Message -->
+                    <td *ngIf="message.message">
+                      {{message.message}}
+                    </td>
+                    <!-- If the message has an image -->
+                    <td>
+                      <img width="25%" *ngIf="message.image" [attr.src]="'http://localhost:3000/images/' + message.image" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+          </mat-card-content>
+          <table width="75%" table-layout="fixed" *ngIf="this.chatting">
+            <tr>
+              <td width="75%">
+                <mat-form-field>
+                  <input matInput placeholder="message" [(ngModel)]="message" type="text" (keydown.enter)="sendMessage()">
+                </mat-form-field>
+              </td>
+              <td width="25%">
+                <mat-card-actions>
+                  <button mat-raised-button (click)="sendMessage()" color="primary">Send</button>
+                </mat-card-actions>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Upload Image:
+                <button mat-icon-button (click)="fileInput.click()">
+                  <mat-icon>folder_open</mat-icon>
                 </button>
-          </mat-list-item>
-          <mat-list-item *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
-            Delete Channel
-            <button mat-icon-button (click)="removeChannel()">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-list-item>
-          <mat-card-subtitle>
-            Users in channel
-          </mat-card-subtitle>
-          <mat-list-item *ngFor='let u of this.usersInChannel'>
-            {{u.username}}
-            <button *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" mat-icon-button (click)="removeUserFromChannel(u._id)">
-              <mat-icon>remove_circle</mat-icon>
-            </button>
-          </mat-list-item>
-          <div *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
-            <mat-card-subtitle>
-              Users not in channel
-            </mat-card-subtitle>
-            <mat-list-item *ngFor='let u of this.usersNotInChannel'>
-              {{u.username}}
-              <button mat-icon-button (click)="addUserToChannel(u._id)">
-                <mat-icon>add_circle</mat-icon>
-              </button>
-            </mat-list-item>
-          </div>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
+                <input hidden type="file" #fileInput (change)="onFileSelected($event)">
+                <div *ngIf="this.selectedFile">
+                  {{this.selectedFile.name}}
+                </div>
+              </td>
+              <td>
+                <mat-card-actions>
+                  <button mat-raised-button color="primary" (click)="onUpload()">Upload</button>
+                </mat-card-actions>
+              </td>
+            </tr>
+          </table>
+        </mat-card>
+      </td>
 
+      <td width="25%">
+        <mat-card class='users-card' cellpadding="25px">
+            <mat-card-header>
+                <mat-card-title>CHAT PROPERTIES</mat-card-title>
+              </mat-card-header>
+          <mat-card-content [style.height.px]="'500'" [style.width.px]="'250'">
+            <mat-list>
+              <mat-list-item>
+                <button mat-raised-button (click)="toggleChat()" color='primary'>
+                  <div *ngIf="this.chatting">
+                    Exit chat
+                  </div>
+                  <div *ngIf="!this.chatting">
+                    Enter Chat
+                  </div>
+                </button>
+              </mat-list-item>
+              <mat-list-item *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
+                Delete Channel
+                <button mat-icon-button (click)="removeChannel()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-list-item>
+              <mat-card-subtitle>
+                Users in channel
+              </mat-card-subtitle>
+              <mat-list-item *ngFor='let u of this.usersInChannel'>
+                <table cellpadding="10px" table-layout="fixed">
+                  <tr>
+                    <td width="25%">
+                      <!-- User avatar -->
+                      <img width="50px" *ngIf="user.image" [attr.src]="'http://localhost:3000/images/' + u.image" class="avatar" />
+                    </td>
+                    <td width="50%">
+                      {{u.username}}
+                    </td>
+                    <td width="25%">
+                      <button *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'" mat-icon-button (click)="removeUserFromChannel(u._id)">
+                        <mat-icon>remove_circle</mat-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+              </mat-list-item>
+              <div *ngIf="this.user.rank === 'Super' || this.user.rank === 'Group'">
+                <mat-card-subtitle>
+                  Users not in channel
+                </mat-card-subtitle>
+                <mat-list-item *ngFor='let u of this.usersNotInChannel'>
+                  <table cellPadding="10px" table-layout="fixed">
+                    <tr>
+                      <td width="25%">
+                        <!-- User avatar -->
+                        <img width="50px" *ngIf="user.image" [attr.src]="'http://localhost:3000/images/' + u.image"
+                          class="avatar" />
+                      </td>
+                      <td width="50%">
+                        {{u.username}}
+                      </td>
+                      <td width="25%">
+                        <button mat-icon-button (click)="addUserToChannel(u._id)">
+                          <mat-icon>add_circle</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </mat-list-item>
+              </div>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </td>
+      <td width="25%">
+      </td>
+    </tr>
+  </table>
 
-</mat-grid-list>
+</mat-card>

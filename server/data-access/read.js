@@ -3,7 +3,6 @@ module.exports = {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).find({}).toArray(function (err, res) {
                 if (err) throw err
-                console.log(res)
                 resolve(res)
             })
         })        
@@ -15,7 +14,6 @@ module.exports = {
                 if (err) {
                     throw err
                 }
-                console.log(res)
                 resolve(res)
             })
         })
@@ -27,7 +25,6 @@ module.exports = {
                 if (err) {
                     throw err
                 }
-                console.log(res)
                 resolve(res)
             })
         })

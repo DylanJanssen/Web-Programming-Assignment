@@ -10,10 +10,11 @@ module.exports = function (app, db, collectionName, update) {
                 username: req.body.username,
                 password: req.body.password,
                 email: req.body.email,
-                rank: req.body.rank
+                rank: req.body.rank,
+                image: req.body.image
             }
         }
-
+        console.log(newValues)
         try {
             await update.item(db, collectionName, query, newValues)
             res.send({success: true })
