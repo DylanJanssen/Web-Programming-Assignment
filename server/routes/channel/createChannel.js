@@ -1,4 +1,5 @@
 module.exports = function (app, db, collectionName, create, read) {
+    // route for creating a channel
     app.post('/createChannel', async (req, res) => {
         
         const channel = [

@@ -22,7 +22,6 @@ export class NewChannelComponent implements OnInit {
   selectedFile = null
   imagepath = ''
   messageUser
-
   chatting = false
 
   @Input('group') group

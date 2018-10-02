@@ -1,4 +1,5 @@
 module.exports = {
+    // inserting an object into the database
     item: async function (db, collectionName, obj) {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).insertMany(obj, function (err, res) {
@@ -9,6 +10,7 @@ module.exports = {
         })
     },
 
+    // create a new collection in the database
     collection: async function (db, collectionName) {
         return new Promise((resolve, reject) => {
             db.createCollection(collectionName, function (err, res) {

@@ -1,4 +1,5 @@
 module.exports = function (app, db, collectionName, create, read) {
+    // route for creating a group 
     app.post('/createGroup', async (req, res) => {
         
         const group = [

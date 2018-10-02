@@ -74,8 +74,6 @@ export class NewDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.username != null && result.password != null && result.email != null && result.rank != null) {
         console.log('dialog closed')
-        //console.log(result)
-        //this.newGroup = result
         this.createUser(result)
         this.getUserGroups(this.user._id)
       }

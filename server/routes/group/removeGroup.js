@@ -1,6 +1,7 @@
 const mongodb = require('mongodb')
 
 module.exports = function (app, db, collectionName, remove) {
+    // route for removing a group
     app.delete('/removeGroup/:_id', async (req, res) => {
         const delQuery = { _id: new mongodb.ObjectID(req.params._id) }
         const delChannelQuery = { groupId: req.params._id}

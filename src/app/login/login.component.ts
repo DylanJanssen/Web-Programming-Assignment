@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  // function for logging a user in, adds the user object to the session storage
   login(): void {
     const userCredentials = { username: this.username, password: this.password }
     this._userService.loginUser(userCredentials).subscribe(

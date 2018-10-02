@@ -1,4 +1,5 @@
 module.exports = function (app, db, collectionName, create, read) {
+    // route for creating a user 
     app.post('/createUser', async (req, res) => {
         
         const user = [

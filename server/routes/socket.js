@@ -1,5 +1,5 @@
 module.exports = async function (app, io, db, collectionName, create, read) {
-
+    // socket.io implementation for the messaging sevice
     console.log("Server Socket Initialised");
 
     // respond to connection request

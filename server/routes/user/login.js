@@ -1,4 +1,5 @@
 module.exports = function (app, db, collectionName, read) {
+    // route for a user login
     app.post('/login', async (req, res) => {
         
         const query = {'username': req.body.username}

@@ -1,6 +1,7 @@
 const mongodb = require('mongodb')
 
 module.exports = function (app, db, collectionName, update) {
+    // route for updating an existing user
     app.post('/updateUser', async (req, res) => {
         const query = { _id: new mongodb.ObjectID(req.body._id) }
 

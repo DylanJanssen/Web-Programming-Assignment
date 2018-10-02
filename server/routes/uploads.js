@@ -1,5 +1,5 @@
 module.exports = function (app, formidable) {
-
+    // route for uploading an image
     app.post('/upload', async (req, res) => {
 
         try {

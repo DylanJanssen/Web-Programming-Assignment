@@ -41,7 +41,6 @@ async function connect() {
     await create.collection(db, 'Groups')
     await create.collection(db, 'Channels')
     await create.collection(db, 'ChatMessages')
-    await create.collection(db, 'Images')
 
     // Setup the routes
     await require('./routes/user/createUser.js')(app, db, 'Users', create, read)
@@ -77,6 +76,7 @@ async function connect() {
         }
     ]
     const query = { 'username': 'Super' }
+    // check if Super is in the database, if not then add it 
     try {
         if (await read.itemExists(db, 'Users', query) == null) {
             create.item(db, 'Users', user)

@@ -1,4 +1,5 @@
 module.exports = {
+    // remove an item from the collection given a query
     item: async function (db, collectionName, delQuery) {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).deleteOne(delQuery, function (err, obj) {
@@ -8,6 +9,7 @@ module.exports = {
             })
         })
     },
+    // remove multiple items from the collection given a query 
     items: async function (db, collectionName, delQuery) {
         return new Promise((resolve, reject) => {
             db.collection(collectionName).deleteMany(delQuery, function (err, obj) {
