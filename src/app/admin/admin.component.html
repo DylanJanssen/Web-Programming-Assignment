@@ -4,26 +4,32 @@
       <mat-card-subtitle>
         Users
       </mat-card-subtitle>
-      <table cellpadding="20px" table-layout="fixed" >
+      <table cellpadding="10px" table-layout="fixed" >
         <tr>
           <mat-list-item *ngFor='let u of this.users'>
-            <td width="16%">
+              <td>
+                  <b>Username:</b> 
+              </td>
+            <td width="12.5%">
               {{u.username}}
             </td>
+            <td>
+                <b>Rank:</b>
+            </td>
             <mat-radio-group [(ngModel)]=u.rank >
-              <td width="16%">
+              <td width="12.5%">
                 <mat-radio-button value='User' >
                   User
                 </mat-radio-button>
               </td>
 
-              <td width="16%">
+              <td width="12.5%">
                 <mat-radio-button value='Group' >
                   Group
                 </mat-radio-button>
               </td>
 
-              <td width="16%">
+              <td width="12.5%">
                 <mat-radio-button *ngIf="this.user.rank === 'Super'" value='Super' >
                   Super
                 </mat-radio-button>
@@ -31,13 +37,22 @@
 
             </mat-radio-group>
 
-            <td width="16%">
+            <td>
+                <b>Email:</b>
+            </td>
+            <td>
+              <mat-form-field>
+                  <input matInput [(ngModel)]="u.email">
+              </mat-form-field>
+          </td>
+
+            <td>
               <mat-list-item>
                 <button mat-raised-button (click)="save(u)" color="primary">Save</button>
               </mat-list-item>
             </td>
 
-            <td width="16%">
+            <td>
               <mat-list-item>
                 <button mat-raised-button (click)="removeUser(u._id)" color='warn'>
                     Delete
